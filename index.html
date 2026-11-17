@@ -1,157 +1,246 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>ForceTwin</title>
 <meta name="description" content="ForceTwin: Physics-informed Digital Twins for Robotic Manipulation from Instrumented Human Interaction">
+<meta property="og:title" content="ForceTwin">
+<meta property="og:description" content="Physics-informed digital twins of articulated objects from instrumented human interaction.">
+<meta property="og:image" content="assets/fig/teaser.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..100,500..800&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
 <style>
-  :root {
-    --bg: #ffffff;
-    --fg: #16181d;
-    --muted: #5d6470;
-    --line: #e4e6ea;
-    --accent: #1f6feb;
-    --chip: #f4f5f7;
-  }
-  @media (prefers-color-scheme: dark) {
-    :root {
-      --bg: #101216;
-      --fg: #e9ecf1;
-      --muted: #a2aab8;
-      --line: #262b33;
-      --accent: #6fa8ff;
-      --chip: #1a1e25;
-    }
-  }
-  * { box-sizing: border-box; }
-  body {
-    margin: 0;
-    background: var(--bg);
-    color: var(--fg);
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
-    line-height: 1.6;
-    -webkit-font-smoothing: antialiased;
-  }
-  .wrap { max-width: 880px; margin: 0 auto; padding: 56px 20px 80px; }
-  header { text-align: center; }
-  h1 {
-    font-size: clamp(1.9rem, 5vw, 2.7rem);
-    line-height: 1.15;
-    margin: 0 0 .1em;
-    letter-spacing: -0.02em;
-  }
-  h1 .method { white-space: nowrap; }
-  .subtitle {
-    font-size: clamp(1rem, 2.4vw, 1.18rem);
-    color: var(--muted);
-    margin: 0 auto 1.6em;
-    max-width: 44ch;
-  }
-  .authors { margin: 0 0 .4em; font-size: 1.02rem; }
-  .authors a { color: inherit; text-decoration: none; border-bottom: 1px solid var(--line); }
-  .authors a:hover { border-color: var(--accent); color: var(--accent); }
-  .affil { color: var(--muted); font-size: .94rem; margin: 0 0 2em; }
-  sup { font-size: .72em; }
-  .links { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-bottom: 2.6em; }
-  .btn {
-    display: inline-block;
-    padding: 9px 18px;
-    border-radius: 999px;
-    border: 1px solid var(--line);
-    background: var(--chip);
-    color: var(--fg);
-    text-decoration: none;
-    font-size: .94rem;
-  }
-  .btn:hover { border-color: var(--accent); color: var(--accent); }
-  .btn[aria-disabled="true"] { opacity: .5; cursor: default; }
-  .btn[aria-disabled="true"]:hover { border-color: var(--line); color: var(--fg); }
-  figure { margin: 0 0 2.6em; }
-  img { max-width: 100%; height: auto; display: block; border-radius: 8px; }
-  figcaption { color: var(--muted); font-size: .88rem; margin-top: .8em; text-align: center; }
-  h2 {
-    font-size: 1.12rem;
-    letter-spacing: .04em;
-    text-transform: uppercase;
-    color: var(--muted);
-    border-bottom: 1px solid var(--line);
-    padding-bottom: .4em;
-    margin: 2.4em 0 1em;
-  }
-  .abstract { font-size: 1rem; }
-  footer {
-    margin-top: 3.4em;
-    padding-top: 1.4em;
-    border-top: 1px solid var(--line);
-    color: var(--muted);
-    font-size: .86rem;
-    text-align: center;
-  }
-  .sc { font-variant-caps: small-caps; }
+/* Layout: one 1040px reading column; figures may widen to 1200px; tables scroll inside their own box. */
+:root{
+  --bg:#f6f7f8; --surface:#ffffff; --ink:#15191e; --muted:#5a6470; --line:#dde1e6; --accent:#2e8a57; --accent-ink:#ffffff; --row:#f1f3f5;
+  --display:"Archivo","Arial Narrow",system-ui,sans-serif;
+  --body:"IBM Plex Sans",system-ui,-apple-system,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#121518; --surface:#1b1f24; --ink:#e9edf1; --muted:#98a2ad; --line:#2c333b; --accent:#5cc58a; --accent-ink:#0d1a12; --row:#20252b; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#121518; --surface:#1b1f24; --ink:#e9edf1; --muted:#98a2ad; --line:#2c333b; --accent:#5cc58a; --accent-ink:#0d1a12; --row:#20252b; color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 var(--body)}
+main{max-width:1040px;margin:0 auto;padding-inline:16px;padding-block:40px 64px;display:grid;gap:56px}
+section{display:grid;gap:16px;min-width:0}
+h1{font-family:var(--display);font-stretch:78%;font-weight:800;font-size:clamp(44px,8vw,84px);line-height:.95;margin:0;letter-spacing:-.01em}
+.subtitle{font-family:var(--display);font-stretch:90%;font-weight:600;font-size:clamp(19px,2.6vw,26px);line-height:1.25;margin:10px 0 0;text-wrap:balance;max-width:30ch}
+h2{font-family:var(--display);font-stretch:85%;font-weight:750;font-size:28px;line-height:1.1;margin:0;text-wrap:balance}
+h3{font-size:16px;font-weight:600;margin:0}
+.authors{display:flex;flex-wrap:wrap;gap:4px 18px;font-size:17px;margin-top:20px}
+.authors sup,.affil sup{color:var(--muted);font-size:.7em;margin-left:1px}
+.affil{display:flex;flex-wrap:wrap;gap:2px 18px;color:var(--muted);font-size:14px;margin-top:4px}
+.links{display:flex;flex-wrap:wrap;gap:8px;margin-top:22px}
+.links a,.links span{font:600 14px var(--body);text-decoration:none;border-radius:6px;padding:9px 16px;border:1px solid var(--line)}
+.links a{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.links span{color:var(--muted)}
+.links a:focus-visible,a:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+figure{margin:0;display:grid;gap:8px;min-width:0}
+.paper{background:#ffffff;border:1px solid var(--line);border-radius:8px;padding:12px;display:grid;place-items:center}
+.paper img{display:block;max-width:100%;height:auto}
+figcaption{font-size:14px;color:var(--muted);max-width:75ch}
+.wide{margin-inline:calc(min(0px, (1040px - 100vw)/2 + 16px))}
+@media (min-width:1240px){.wide{margin-inline:-80px}}
+ul.points{margin:0;padding-left:20px;display:grid;gap:6px;max-width:75ch}
+ul.points b{font-weight:600}
+.abstract{max-width:75ch;margin:0}
+.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}
+@media (max-width:760px){.grid2{grid-template-columns:minmax(0,1fr)}}
+.steps{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+@media (max-width:860px){.steps{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:480px){.steps{grid-template-columns:minmax(0,1fr)}}
+.step{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:14px;display:grid;gap:6px;align-content:start}
+.step .n{font:500 12px var(--mono);color:var(--accent)}
+.step p{margin:0;font-size:14px;color:var(--muted)}
+.demo{border:1px solid var(--line);border-radius:10px;overflow:hidden;background:var(--surface)}
+.demo iframe{display:block;width:100%;height:800px;border:0}
+@media (max-width:900px){.demo iframe{height:1500px}}
+.table{overflow-x:auto;background:var(--surface);border:1px solid var(--line);border-radius:8px}
+table{border-collapse:collapse;width:100%;font-size:14px;font-variant-numeric:tabular-nums}
+th,td{padding:8px 12px;text-align:right;white-space:nowrap;border-bottom:1px solid var(--line)}
+th:first-child,td:first-child,td.l,th.l{text-align:left}
+thead th{font-weight:600;color:var(--muted);font-size:13px}
+tbody tr:nth-child(even){background:var(--row)}
+tr.ours td{font-weight:600}
+td b{color:var(--accent);font-weight:700}
+td small{color:var(--muted);font-size:11px;margin-left:3px}
+tr.mean td{border-top:2px solid var(--ink);font-weight:600}
+.robot{font:600 11px var(--body);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);background:var(--bg)}
+.kpis{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+@media (max-width:640px){.kpis{grid-template-columns:minmax(0,1fr)}}
+.kpi{border-top:3px solid var(--accent);padding-top:8px}
+.kpi b{display:block;font:500 34px/1.1 var(--mono)}
+.kpi span{font-size:14px;color:var(--muted)}
+pre{margin:0;background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:16px;overflow-x:auto;font:13px/1.55 var(--mono)}
+.copy{justify-self:start;font:600 13px var(--body);background:none;color:var(--ink);border:1px solid var(--line);border-radius:6px;padding:6px 12px;cursor:pointer}
+footer{color:var(--muted);font-size:13px;border-top:1px solid var(--line);padding-top:16px}
+a{color:var(--accent)}
 </style>
 </head>
 <body>
-<div class="wrap">
+<main>
 
-  <header>
-    <h1><span class="method">ForceTwin</span></h1>
-    <p class="subtitle">Physics-informed Digital Twins for Robotic Manipulation from Instrumented Human Interaction</p>
+<header>
+  <h1>ForceTwin</h1>
+  <p class="subtitle">Physics-informed Digital Twins for Robotic Manipulation from Instrumented Human Interaction</p>
+  <div class="authors">
+    <span>Tim Engelbracht<sup>1</sup></span><span>René Zurbrügg<sup>1</sup></span><span>Mayank Mittal<sup>1,2</sup></span><span>Marco Hutter<sup>1</sup></span><span>Marc Pollefeys<sup>1,3</sup></span><span>Hermann Blum<sup>4</sup></span><span>Zuria Bauer<sup>1</sup></span>
+  </div>
+  <div class="affil"><span><sup>1</sup>ETH Zurich</span><span><sup>2</sup>NVIDIA</span><span><sup>3</sup>Microsoft</span><span><sup>4</sup>University of Bonn</span></div>
+  <nav class="links" aria-label="Resources">
+    <a href="https://arxiv.org/abs/2609.21751">Paper</a>
+    <span>Code (soon)</span>
+    <span>Data (soon)</span>
+    <a href="#bibtex">BibTeX</a>
+  </nav>
+</header>
 
-    <p class="authors">
-      Tim Engelbracht<sup>1</sup> &nbsp;
-      René Zurbrügg<sup>1</sup> &nbsp;
-      Mayank Mittal<sup>1,2</sup> &nbsp;
-      Marco Hutter<sup>1</sup> &nbsp;
-      Marc Pollefeys<sup>1,3</sup> &nbsp;
-      Hermann Blum<sup>4</sup> &nbsp;
-      Zuria Bauer<sup>1</sup>
-    </p>
-    <p class="affil">
-      <sup>1</sup>ETH Zurich &nbsp;&nbsp;
-      <sup>2</sup>NVIDIA &nbsp;&nbsp;
-      <sup>3</sup>Microsoft &nbsp;&nbsp;
-      <sup>4</sup>University of Bonn
-    </p>
-
-    <nav class="links">
-      <a class="btn" href="#" aria-disabled="true">Paper (arXiv) — soon</a>
-      <a class="btn" href="#" aria-disabled="true">Code — soon</a>
-      <a class="btn" href="#" aria-disabled="true">Video — soon</a>
-    </nav>
-  </header>
-
+<section class="wide">
   <figure>
-    <img src="teaser.png" alt="ForceTwin builds a physics-informed digital twin from instrumented human interaction: probing trajectories, estimated kinematics, identified dynamics, and robot manipulation.">
-    <figcaption><strong>ForceTwin</strong> builds a physics-informed digital twin from instrumented human interaction. Interaction trajectories estimate object kinematics, while measured wrenches identify dynamics and mechanism behavior.</figcaption>
+    <div class="paper"><img src="assets/fig/teaser.jpg" width="2000" height="1006" alt="ForceTwin overview: instrumented probing of a kitchen, kinematics, dynamics and mechanism, robotic manipulation"></div>
+    <figcaption>A person probes each articulated part with a force-sensing gripper. Poses give the joint; forces give inertia, friction, damping and the mechanism.</figcaption>
   </figure>
+</section>
 
+<section>
+  <div class="kpis">
+    <div class="kpi"><b>87%</b><span>goal completion on Spot and Franka FR3 (VLM prior 60%, kinematics only 57%)</span></div>
+    <div class="kpi"><b>29.5%</b><span>inertial-parameter error (VLM prior 53.0%)</span></div>
+    <div class="kpi"><b>16.3%</b><span>closing-time error of door twins in simulation (VLM prior 57.7%)</span></div>
+  </div>
+</section>
+
+<section>
   <h2>Abstract</h2>
-  <p class="abstract">
-    Manipulating objects requires understanding not only their motion, but also the physical properties that
-    determine it. For articulated objects, these include inertia, friction, and mechanisms such as springs or
-    door closers, whose effects can vary with configuration and velocity. Such properties are not directly
-    observable from appearance: visually identical doors may require very different effort to manipulate.
-    Existing digital-twin pipelines recover primarily kinematics or assign static physical parameters from
-    visual and language priors, which can yield physically implausible estimates. As a result, state-dependent
-    mechanism dynamics remain unidentified and are not represented in standard asset formats. We present
-    ForceTwin, a system for identifying physics-informed digital twins of articulated objects from instrumented
-    human interaction. A person probes an object using a handheld force-sensing gripper, providing synchronized
-    poses and interaction forces from which we estimate the articulation, parametric dynamics including inertia,
-    Coulomb friction, viscous damping, and a structured neural residual capturing state-dependent mechanism
-    forces. ForceTwin nearly halves the inertial-parameter error of a VLM prior. As a feedforward dynamics model
-    for impedance control on a Spot and a Franka FR3, ForceTwin achieves 87% goal completion across nine
-    object-embodiment pairs, compared with 60% using VLM-prior and 57% using kinematics-only twins, with the
-    largest gains on objects whose strong mechanisms cause both baselines to stall.
-  </p>
+  <p class="abstract">Manipulating objects requires understanding not only their motion, but also the physical properties that determine it. For articulated objects, these include inertia, friction, and mechanisms such as springs or door closers, whose effects can vary with configuration and velocity. Such properties are not directly observable from appearance: visually identical doors may require very different effort to manipulate. Existing digital-twin pipelines recover primarily kinematics or assign static physical parameters from visual and language priors, which can yield physically implausible estimates. As a result, state-dependent mechanism dynamics remain unidentified and are not represented in standard asset formats. We present ForceTwin, a system for identifying physics-informed digital twins of articulated objects from instrumented human interaction. A person probes an object using a handheld force-sensing gripper, providing synchronized poses and interaction forces from which we estimate the articulation, parametric dynamics including inertia, Coulomb friction, viscous damping, and a structured neural residual capturing state-dependent mechanism forces. ForceTwin nearly halves the inertial-parameter error of a VLM prior. As a feedforward dynamics model for impedance control on a Spot and a Franka FR3, ForceTwin achieves 87% goal completion across nine object-embodiment pairs, compared with 60% using VLM-prior and 57% using kinematics-only twins, with the largest gains on objects whose strong mechanisms cause both baselines to stall. We further use the identified twins to train whole-body door-traversal policies and deploy them in the real world.</p>
+</section>
 
+<section>
+  <h2>Method</h2>
+  <div class="steps">
+    <div class="step"><span class="n">1</span><h3>Probe</h3><p>Handheld gripper with an Aria camera and a 6-axis force/torque sensor. Synchronized tool poses and wrenches.</p></div>
+    <div class="step"><span class="n">2</span><h3>Kinematics</h3><p>Screw-axis fit to the tool path. Revolute or prismatic by BIC, refined with a factor graph.</p></div>
+    <div class="step"><span class="n">3</span><h3>Dynamics</h3><p>Inertia, Coulomb friction, viscous damping, plus a structured neural residual for springs and closers.</p></div>
+    <div class="step"><span class="n">4</span><h3>Twin</h3><p>Model registered to the reconstructed geometry. Exported as USD for simulation or used as robot feedforward.</p></div>
+  </div>
+  <figure class="wide">
+    <div class="paper"><img src="assets/fig/pipeline.jpg" width="2000" height="871" alt="ForceTwin pipeline diagram" loading="lazy"></div>
+    <figcaption>Pipeline. Geometry comes from the same recording or from a separate reconstruction.</figcaption>
+  </figure>
+</section>
+
+<section id="demo">
+  <h2>Interactive twins</h2>
+  <ul class="points">
+    <li>Two doors from the paper: heavy metal door, wooden door with closer.</li>
+    <li>Drag the handle. The readout is the handle force the identified model predicts.</li>
+    <li>Switch to a default simulator joint to compare.</li>
+  </ul>
+  <div class="demo"><iframe src="demo/index.html#embed" title="Interactive door twins" loading="lazy"></iframe></div>
+</section>
+
+<section>
+  <h2>Kinematics</h2>
+  <ul class="points"><li>12 axes annotated in a Leica RTC360 scan. Mean with standard deviation.</li></ul>
+  <div class="table"><table>
+    <thead><tr><th class="l">Method</th><th>Prismatic θ<sub>err</sub> [°]</th><th>Revolute θ<sub>err</sub> [°]</th><th>Revolute d<sub>L2</sub> [mm]</th><th>Type acc. pris. [%]</th><th>Type acc. rev. [%]</th></tr></thead>
+    <tbody>
+      <tr class="ours"><td>ForceTwin</td><td><b>1.4</b><small>±0.2</small></td><td><b>1.5</b><small>±0.8</small></td><td><b>23</b><small>±26</small></td><td><b>100.0</b></td><td><b>100.0</b></td></tr>
+      <tr><td>MoMa-SG</td><td>1.6<small>±0.8</small></td><td>1.7<small>±0.0</small></td><td>46<small>±20</small></td><td><b>100.0</b></td><td><b>100.0</b></td></tr>
+      <tr><td>OPDMulti</td><td>4.8</td><td>34.9<small>±29.1</small></td><td>143<small>±117</small></td><td><b>100.0</b></td><td>54.1</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section>
+  <h2>Dynamics</h2>
+  <div class="grid2">
+    <figure>
+      <div class="paper"><img src="assets/fig/dynamics_callout_single.svg" alt="Measured generalized effort of the wood door against the parametric model and the model with mechanism" loading="lazy"></div>
+      <figcaption>Wood door. Measured effort (gray), parametric model (dashed), with mechanism (green).</figcaption>
+    </figure>
+    <figure>
+      <div class="paper"><img src="assets/fig/inertia_parity_single_tex.svg" alt="Estimated against ground-truth inertia and mass on log axes" loading="lazy"></div>
+      <figcaption>Inertia and mass against ground truth. Mean error 29.5% (ForceTwin), 53.0% (VLM prior).</figcaption>
+    </figure>
+  </div>
+  <h3>Free swing, real against simulated twin</h3>
+  <div class="table"><table>
+    <thead><tr><th class="l">Object</th><th>q<sub>0</sub> [°]</th><th>Real [s]</th><th>ForceTwin [s]</th><th>ARE [%]</th><th>VLM prior [s]</th><th>ARE [%]</th></tr></thead>
+    <tbody>
+      <tr><td>Metal door</td><td>45</td><td>5.6</td><td>5.9</td><td><b>5.4</b></td><td>2.1</td><td>62.5</td></tr>
+      <tr><td>Metal door</td><td>90</td><td>8.4</td><td>8.8</td><td><b>4.8</b></td><td>2.5</td><td>70.2</td></tr>
+      <tr><td>Wood door</td><td>45</td><td>3.7</td><td>5.0</td><td><b>35.1</b></td><td>2.0</td><td>45.9</td></tr>
+      <tr><td>Wood door</td><td>90</td><td>5.0</td><td>6.0</td><td><b>20.0</b></td><td>2.4</td><td>52.0</td></tr>
+      <tr class="mean"><td>Macro mean</td><td></td><td></td><td></td><td><b>16.3</b></td><td></td><td>57.7</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section>
+  <h2>Robot manipulation</h2>
+  <ul class="points">
+    <li>Identified dynamics as feedforward of a Cartesian impedance controller. Same robot, controller and 6 s goal for all twins.</li>
+    <li>Complete: goal completion [%]. Track: goal-normalized tracking RMSE [%].</li>
+    <li>Strong mechanisms (oven, metal door) stall both baselines below 5% completion.</li>
+  </ul>
+  <figure>
+    <div class="paper"><img src="assets/fig/robots.jpg" width="1280" height="703" alt="Spot and Franka FR3 opening the five objects, start and end overlays with mechanism torque plots" loading="lazy"></div>
+  </figure>
+  <div class="table"><table>
+    <thead><tr><th class="l">Object</th><th class="l">Mechanism</th><th>ForceTwin complete ↑</th><th>track ↓</th><th>VLM prior complete ↑</th><th>track ↓</th><th>Kin. only complete ↑</th><th>track ↓</th></tr></thead>
+    <tbody>
+      <tr><td class="robot" colspan="8">Spot</td></tr>
+      <tr><td>Drawer</td><td class="l">weak</td><td>88.0</td><td><b>9.2</b></td><td><b>95.2</b></td><td>34.1</td><td>90.6</td><td>38.0</td></tr>
+      <tr><td>Sliding door</td><td class="l">none</td><td><b>100.0</b></td><td><b>10.5</b></td><td><b>100.0</b></td><td>15.4</td><td><b>100.0</b></td><td>18.5</td></tr>
+      <tr><td>Wood door</td><td class="l">medium</td><td><b>100.0</b></td><td><b>14.0</b></td><td>91.2</td><td>24.3</td><td>88.3</td><td>27.3</td></tr>
+      <tr><td>Oven</td><td class="l">strong</td><td><b>100.0</b></td><td><b>33.3</b></td><td>4.0</td><td>91.1</td><td>2.2</td><td>91.9</td></tr>
+      <tr><td>Metal door</td><td class="l">strong</td><td class="l" colspan="6">n/a, forces exceed Spot's actuation limits</td></tr>
+      <tr><td class="robot" colspan="8">Franka FR3</td></tr>
+      <tr><td>Sliding door</td><td class="l">none</td><td>93.7</td><td><b>10.5</b></td><td>98.7</td><td>17.2</td><td><b>99.3</b></td><td>26.9</td></tr>
+      <tr><td>Drawer</td><td class="l">weak</td><td>85.6</td><td><b>17.6</b></td><td><b>93.1</b></td><td>37.0</td><td>85.1</td><td>22.4</td></tr>
+      <tr><td>Metal door</td><td class="l">strong</td><td><b>81.2</b></td><td><b>24.4</b></td><td>1.6</td><td>91.0</td><td>1.5</td><td>91.0</td></tr>
+      <tr><td>Wood door</td><td class="l">medium</td><td><b>69.8</b></td><td><b>30.3</b></td><td>51.7</td><td>47.7</td><td>44.0</td><td>56.0</td></tr>
+      <tr><td>Oven</td><td class="l">strong</td><td><b>67.6</b></td><td><b>49.7</b></td><td>1.8</td><td>90.8</td><td>0.9</td><td>91.6</td></tr>
+      <tr class="mean"><td>Overall mean</td><td></td><td><b>87.3</b></td><td><b>22.2</b></td><td>59.7</td><td>49.8</td><td>56.9</td><td>51.5</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section>
+  <h2>Policy learning</h2>
+  <ul class="points">
+    <li>Identified wood and metal door models replace door randomization in Isaac Lab training.</li>
+    <li>Whole-body door-traversal policies deployed on ANYmal with an arm.</li>
+    <li>Wood-door policy: 5 of 5 trials on the wood door.</li>
+  </ul>
+  <figure>
+    <div class="paper"><img src="assets/fig/sim2real.jpg" width="1600" height="957" alt="Real-to-sim-to-real: identified door models train ANYmal policies; end-effector traces on the real wood door" loading="lazy"></div>
+  </figure>
+</section>
+
+<section id="bibtex">
   <h2>BibTeX</h2>
-  <p style="color: var(--muted);">Available once the preprint is online.</p>
+<pre id="bib">@article{engelbracht2026forcetwin,
+  title   = {ForceTwin: Physics-informed Digital Twins for Robotic Manipulation from Instrumented Human Interaction},
+  author  = {Engelbracht, Tim and Zurbr{\"u}gg, Ren{\'e} and Mittal, Mayank and Hutter, Marco and Pollefeys, Marc and Blum, Hermann and Bauer, Zuria},
+  journal = {arXiv preprint arXiv:2609.21751},
+  year    = {2026}
+}</pre>
+  <button class="copy" id="copy" type="button">Copy</button>
+</section>
 
-  <footer>
-    Page under construction — paper, code and videos to follow.
-  </footer>
-
-</div>
+<footer>Contact: tengelbracht@ethz.ch</footer>
+</main>
+<script>
+document.getElementById('copy').addEventListener('click', e => {
+  const t = document.getElementById('bib').textContent, b = e.currentTarget;
+  navigator.clipboard.writeText(t).then(() => { b.textContent = 'Copied'; setTimeout(() => b.textContent = 'Copy', 1500); })
+    .catch(() => { const r = document.createRange(); r.selectNodeContents(document.getElementById('bib')); const s = getSelection(); s.removeAllRanges(); s.addRange(r); });
+});
+</script>
 </body>
 </html>
