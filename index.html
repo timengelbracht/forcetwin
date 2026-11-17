@@ -44,6 +44,8 @@ figure{margin:0;display:grid;gap:8px;min-width:0}
 figcaption{font-size:14px;color:var(--muted);max-width:75ch}
 .wide{margin-inline:calc(min(0px, (1040px - 100vw)/2 + 16px))}
 @media (min-width:1240px){.wide{margin-inline:-80px}}
+.banner video{display:block;width:100%;height:auto;aspect-ratio:1920/1080;max-width:100%;border-radius:10px;background:#0f1216;object-fit:cover}
+@media (min-width:900px){.banner video{aspect-ratio:1920/820}}
 ul.points{margin:0;padding-left:20px;display:grid;gap:6px;max-width:75ch}
 ul.points b{font-weight:600}
 .abstract{max-width:75ch;margin:0}
@@ -97,6 +99,13 @@ a{color:var(--accent)}
     <a href="#bibtex">BibTeX</a>
   </nav>
 </header>
+
+<section class="wide banner" aria-label="From a recording to a twin: oven door">
+  <video autoplay muted loop playsinline preload="auto" poster="assets/video/banner_poster.jpg" width="1920" height="1080">
+    <source src="assets/video/banner.webm" type="video/webm">
+    <source src="assets/video/banner.mp4" type="video/mp4">
+  </video>
+</section>
 
 <section class="wide">
   <figure>
