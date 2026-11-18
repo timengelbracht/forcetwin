@@ -8,6 +8,7 @@
 <meta property="og:title" content="ForceTwin">
 <meta property="og:description" content="Physics-informed digital twins of articulated objects from instrumented human interaction.">
 <meta property="og:image" content="assets/fig/teaser.jpg">
+<link rel="icon" href="assets/logo.png" type="image/png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@600;700&family=Inter:wght@400;500;600&display=swap">
@@ -59,7 +60,8 @@ ul.lede{padding-left:1.1em;display:grid;gap:6px}
   background:rgba(255,255,255,.72);-webkit-backdrop-filter:saturate(180%) blur(20px);backdrop-filter:saturate(180%) blur(20px);
   box-shadow:0 1px 0 var(--hair);transform:translateY(-100%);transition:transform .32s var(--ease)}
 .nav.open,.nav:focus-within{transform:none}
-.nav-brand{margin-right:auto;font-family:var(--display);font-weight:700;font-size:17px;letter-spacing:-.01em;text-decoration:none}
+.nav-brand{margin-right:auto;text-decoration:none}
+.nav-brand img{height:30px;width:auto}
 .nav-links{display:flex;gap:22px;overflow-x:auto;scrollbar-width:none;padding:0 6px;margin:0 -6px}
 .nav-links::-webkit-scrollbar{display:none}
 .nav-links a{padding:6px 0;white-space:nowrap;color:var(--ink2);font-size:13px;text-decoration:none;transition:color .35s ease}
@@ -85,8 +87,9 @@ a.pill.out:hover{background:var(--dark-ink);color:var(--ink)}
 .hero-shade{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0) 35%,rgba(0,0,0,.35) 60%,rgba(0,0,0,.78) 100%)}
 .hero-inner{position:relative;padding:0 0 56px;opacity:calc(1 - 1.5*var(--p));transform:translateY(calc(-36px*var(--p)));
   transition:opacity .35s var(--ease),transform .45s var(--spring);will-change:opacity,transform}
-.wordmark{margin:0;font-family:var(--display);font-weight:700;font-size:clamp(48px,8vw,104px);line-height:1;letter-spacing:-.03em}
-.title{font-family:var(--display);font-weight:600;font-size:24px;line-height:1.15;letter-spacing:-.015em;margin:14px 0 0;max-width:22em;color:var(--dark-ink)}
+.wordmark{margin:0;line-height:0}
+.wordmark img{height:clamp(84px,10vw,150px);width:auto}
+.title{font-family:var(--display);font-weight:600;font-size:24px;line-height:1.15;letter-spacing:-.015em;margin:22px 0 0;max-width:22em;color:var(--dark-ink)}
 .authors{max-width:48em;margin:22px 0 0;font-size:16px;font-weight:500;line-height:1.5;text-wrap:balance}
 .authors span,.affil span{white-space:nowrap}
 .authors sup,.affil sup{font-size:.68em;opacity:.7;margin-left:1px}
@@ -166,7 +169,7 @@ pre{margin:0;padding:20px 22px;overflow-x:auto;background:var(--band);border-rad
 <body>
 
 <nav class="nav" aria-label="Sections">
-  <a class="nav-brand" href="#top">ForceTwin</a>
+  <a class="nav-brand" href="#top"><img src="assets/logo.png" width="854" height="338" alt="ForceTwin"></a>
   <div class="nav-links">
     <a href="#abstract">Abstract</a>
     <a href="#method">Method</a>
@@ -184,14 +187,14 @@ pre{margin:0;padding:20px 22px;overflow-x:auto;background:var(--band);border-rad
 <div class="hero-pin">
 <header class="hero">
   <div class="hero-media">
-    <video class="hero-video" autoplay muted loop playsinline preload="auto" poster="assets/video/hero_poster.jpg" aria-label="Oven door: recording, kinematics, dynamics, geometry, twin">
+    <video class="hero-video" autoplay muted loop playsinline preload="auto" poster="assets/video/hero_poster.jpg" aria-label="Oven door: recording, kinematics, dynamics, quasi-static torque, geometry, twin release to its 25 degree rest angle">
       <source src="assets/video/hero.webm" type="video/webm">
       <source src="assets/video/hero.mp4" type="video/mp4">
     </video>
     <div class="hero-shade"></div>
   </div>
   <div class="wrap hero-inner">
-    <h1 class="wordmark">ForceTwin</h1>
+    <h1 class="wordmark"><img src="assets/logo.png" width="854" height="338" alt="ForceTwin"></h1>
     <p class="title">Physics-informed Digital Twins for Robotic Manipulation from Instrumented Human Interaction</p>
     <p class="authors"><span>Tim Engelbracht<sup>1</sup></span>, <span>René Zurbrügg<sup>1</sup></span>, <span>Mayank Mittal<sup>1,2</sup></span>, <span>Marco Hutter<sup>1</sup></span>, <span>Marc Pollefeys<sup>1,3</sup></span>, <span>Hermann Blum<sup>4</sup></span>, <span>Zuria Bauer<sup>1</sup></span></p>
     <p class="affil"><span><sup>1</sup>ETH Zurich</span>&emsp;<span><sup>2</sup>NVIDIA</span>&emsp;<span><sup>3</sup>Microsoft</span>&emsp;<span><sup>4</sup>University of Bonn</span></p>
