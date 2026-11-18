@@ -188,8 +188,8 @@ pre{margin:0;padding:20px 22px;overflow-x:auto;background:var(--band);border-rad
 <header class="hero">
   <div class="hero-media">
     <video class="hero-video" autoplay muted loop playsinline preload="auto" poster="assets/video/hero_poster.jpg" aria-label="Oven door: approach, recording, kinematics, dynamics, quasi-static torque, geometry, twin release to its 25 degree rest angle">
-      <source src="assets/video/hero.webm" type="video/webm">
       <source src="assets/video/hero.mp4" type="video/mp4">
+      <source src="assets/video/hero.webm" type="video/webm">
     </video>
     <div class="hero-shade"></div>
   </div>
@@ -376,6 +376,18 @@ pre{margin:0;padding:20px 22px;overflow-x:auto;background:var(--band);border-rad
   "use strict";
   const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
   document.documentElement.classList.add("js");
+
+  // hero video: some browsers skip the autoplay attribute; start it from script, retry on first interaction
+  const vid = document.querySelector(".hero-video");
+  if (vid) {
+    vid.muted = true;
+    const play = () => { if (vid.paused) { const r = vid.play(); if (r) r.catch(() => {}); } };
+    play();
+    vid.addEventListener("canplay", play, { once: true });
+    document.addEventListener("visibilitychange", () => { if (!document.hidden) play(); });
+    ["pointerdown", "touchstart", "scroll", "keydown"].forEach(ev =>
+      addEventListener(ev, play, { once: true, passive: true }));
+  }
 
   // reveal: section heads and media rise in once; reset when they leave through the bottom
   const items = document.querySelectorAll("section.sec > .head, section.sec > .wrap-mid, section.sec > .wrap, #cite > .wrap-copy");
